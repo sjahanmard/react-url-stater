@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Callback, ReturnUseURLState } from "./types";
-import { getQuery } from "./utils/get_query";
-import { jsonParse } from "./utils/json_parse";
+import { Callback, ReturnUseURLState } from "../types";
+import { getQuery } from "./get_query";
+import { jsonParse } from "./json_parse";
 
 export function useURLState<T = {}>(defaultState: T): ReturnUseURLState<T> {
   const [state, setState] = useState<T>(defaultState);

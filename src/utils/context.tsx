@@ -1,5 +1,5 @@
 import { Context, createContext, useContext } from "react";
-import { InitialValue, ReturnUseURLState } from "./types";
+import { InitialValue, ReturnUseURLState } from "../types";
 import { useURLState } from "./use_url_state";
 
 export class RouterState<T> {

@@ -2,7 +2,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { useURLContext } from "./instantiate";
-import { useURLState } from "./use_url_state";
+import { useURLState } from "./utils/use_url_state";
 
 function App() {
   const [state, setState] = useURLState({
