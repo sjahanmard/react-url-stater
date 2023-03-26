@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Callback, ReturnUseURLState } from "../types";
 import { getQuery } from "./get_query";
 import { jsonParse } from "./json_parse";
@@ -18,35 +18,42 @@ export function useURLStateBasic<T = {}>(
       }
     })();
   }, []);
+  const updateState = useCallback(
+    function (callback: (prevState: T) => T, replace: boolean) {
+      const newState = callback(state);
 
-  function updateState(callback: (prevState: T) => T, replace: boolean) {
-    const newState = callback(state);
+      if (Object.is(newState, state)) {
+        return;
+      }
+      const { newUrl, newStateData } = formatData(newState);
 
-    if (Object.is(newState, state)) {
-      return;
-    }
-    const { newUrl, newStateData } = formatData(newState);
+      const historyFunction = replace
+        ? window.history.replaceState
+        : window.history.pushState;
+      historyFunction.apply(window.history, [{}, "", newUrl?.href]);
+      setState(newStateData);
+    },
+    [state]
+  );
 
-    const historyFunction = replace
-      ? window.history.replaceState
-      : window.history.pushState;
-    historyFunction.apply(window.history, [{}, "", newUrl?.href]);
-    setState(newStateData);
-  }
+  const replace = useCallback(
+    function (callback: Callback<T>) {
+      updateState(callback, false);
+    },
+    [updateState]
+  );
+  const push = useCallback(
+    function (callback: Callback<T>) {
+      updateState(callback, false);
+    },
+    [updateState]
+  );
 
-  function push(callback: Callback<T>) {
-    updateState(callback, false);
-  }
-
-  function replace(callback: Callback<T>) {
-    updateState(callback, true);
-  }
-
-  function formatData(newData: T) {
+  const formatData = useCallback(function (newData: T) {
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set("state", JSON.stringify(newData));
     return { newUrl, newStateData: newData };
-  }
+  }, []);
 
   return [state, push, replace];
 }
