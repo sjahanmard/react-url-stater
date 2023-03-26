@@ -1,8 +1,8 @@
 import { Context, createContext, useContext } from "react";
 import { InitialValue, ReturnUseURLState } from "../types";
-import { useURLState } from "./use_url_state";
+import { useURLStateBasic } from "./use_url_state";
 
-export class RouterState<T> {
+export class URLState<T> {
   state: InitialValue<T> = {} as InitialValue<T>;
   context: Context<ReturnUseURLState<InitialValue<T>>>;
 
@@ -13,10 +13,10 @@ export class RouterState<T> {
     );
   }
   Provider: (props: any) => JSX.Element = (props: any) => {
-    const res = useURLState(this?.state);
+    const res = useURLStateBasic(this?.state);
     return <this.context.Provider value={res} {...props} />;
   };
-  useURLContext = () => {
+  useURLState = () => {
     return useContext<ReturnUseURLState<InitialValue<T>>>(this.context);
   };
 }

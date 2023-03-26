@@ -1,14 +1,11 @@
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { useURLContext } from "./instantiate";
-import { useURLState } from "./utils/use_url_state";
+import { useURLState } from "./instantiate";
+import { useURLStateBasic } from "./utils/use_url_state";
 
 function App() {
-  const [state, setState] = useURLState({
-    counter: 0,
-  });
-  const [context, setContext] = useURLContext();
+  const [state, setState] = useURLState();
 
   return (
     <div className="App">
@@ -25,15 +22,6 @@ function App() {
         <button
           onClick={() => {
             setState((prev) => ({
-              counter: Number(prev?.counter || 0) + 1,
-            }));
-          }}
-        >
-          count is {context?.counter}
-        </button>
-        <button
-          onClick={() => {
-            setContext((prev) => ({
               ...prev,
               counter: Number(prev?.counter || 0) + 1,
             }));

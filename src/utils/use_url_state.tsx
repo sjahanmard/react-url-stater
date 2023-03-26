@@ -3,7 +3,9 @@ import { Callback, ReturnUseURLState } from "../types";
 import { getQuery } from "./get_query";
 import { jsonParse } from "./json_parse";
 
-export function useURLState<T = {}>(defaultState: T): ReturnUseURLState<T> {
+export function useURLStateBasic<T = {}>(
+  defaultState: T
+): ReturnUseURLState<T> {
   const [state, setState] = useState<T>(defaultState);
   const query = getQuery("state");
   useEffect(() => {
