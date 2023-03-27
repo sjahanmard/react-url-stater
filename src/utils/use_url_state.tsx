@@ -12,7 +12,7 @@ export function useURLStateBasic<T = {}>(
     (function updateStateFromQueryParams() {
       try {
         const newState = jsonParse<T>(query);
-        setState(newState);
+        if (Object?.keys?.(newState)?.length !== 0) setState(newState);
       } catch {
         // do nothing
       }
